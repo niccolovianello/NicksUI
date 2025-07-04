@@ -3,7 +3,7 @@
 //  NicksUI
 //
 //  Created by Niccolò Vianello on 19/06/25.
-//
+//  Credits: Nick Sarno
 
 
 import SwiftUI
