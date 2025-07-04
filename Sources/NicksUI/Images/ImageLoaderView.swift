@@ -7,13 +7,19 @@
 
 import SwiftUI
 
-struct ImageLoaderView: View {
+public struct ImageLoaderView: View {
     
     var urlString: String
-    var resizingMode = ContentMode.fill
-    var cornerRadius: CGFloat = 0
+    var resizingMode: ContentMode
+    var cornerRadius: CGFloat
+    
+    public init(urlString: String, resizingMode: ContentMode = .fill, cornerRadius: CGFloat = 0) {
+        self.urlString = urlString
+        self.resizingMode = resizingMode
+        self.cornerRadius = cornerRadius
+    }
 
-    var body: some View {
+    public var body: some View {
         Rectangle()
             .opacity(0.0)
             .overlay {
