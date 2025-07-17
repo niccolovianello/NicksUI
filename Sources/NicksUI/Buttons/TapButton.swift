@@ -7,7 +7,42 @@
 
 import SwiftUI
 
-struct TapButton: View {
+/// A customizable SwiftUI button view that supports optional images, stylized backgrounds,
+/// and configurable layout parameters.
+///
+/// ## Features:
+/// - Optional image (from system name or `UIImage`)
+/// - Configurable text label
+/// - Customizable foreground and background colors
+/// - Adjustable padding, height, and corner radius
+/// - Tap action handler via closure
+///
+/// ## Usage Examples:
+///
+/// ```swift
+/// TapButton(imageSystemName: "applelogo", text: "Sign in with Apple") {
+///     // Handle action
+/// }
+///
+/// TapButton(uiImage: UIImage(named: "customIcon")!, text: "Continue with Service") {
+///     // Handle action
+/// }
+///
+/// TapButton(text: "Continue") {
+///     // Handle action
+/// }
+/// ```
+///
+/// ## Parameters:
+/// - `imageSystemName`: The name of the SF Symbol to use as the leading icon.
+/// - `uiImage`: A `UIImage` to display as the leading icon.
+/// - `text`: The button's label text.
+/// - `foregroundColor`: The color of the icon and text.
+/// - `backgroundColor`: The background color of the button.
+/// - `horizontalPadding`: The horizontal padding around the button.
+/// - `buttonHeight`: The height of the button.
+/// - `cornerRadius`: The corner radius of the button.
+/// - `action`: An optional closure that gets executed on tap.
 public struct TapButton: View {
     
     var image: Image?
@@ -79,7 +114,6 @@ public struct TapButton: View {
         self.action = action
     }
     
-    var body: some View {
     public var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .frame(maxWidth: .infinity, maxHeight: 50)
