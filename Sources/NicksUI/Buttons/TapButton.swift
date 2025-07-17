@@ -55,7 +55,7 @@ public struct TapButton: View {
     
     var action: (() -> Void)?
     
-    init(
+    public init(
         imageSystemName: String,
         text: String = "Sign in with Apple",
         foregroundColor: Color = .white,
@@ -75,7 +75,7 @@ public struct TapButton: View {
         self.action = action
     }
     
-    init(
+    public init(
         uiImage: UIImage,
         text: String = "Sign in with Apple",
         foregroundColor: Color = .white,
@@ -95,7 +95,7 @@ public struct TapButton: View {
         self.action = action
     }
     
-    init(
+    public init(
         text: String = "Sign in with Apple",
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
