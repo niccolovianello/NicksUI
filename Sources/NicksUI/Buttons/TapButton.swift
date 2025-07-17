@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TapButton: View {
+public struct TapButton: View {
     
     var image: Image?
     var text: String
@@ -79,6 +80,7 @@ struct TapButton: View {
     }
     
     var body: some View {
+    public var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .frame(maxWidth: .infinity, maxHeight: 50)
             .foregroundStyle(backgroundColor)
