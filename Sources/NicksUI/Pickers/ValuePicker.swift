@@ -143,7 +143,7 @@ private struct PreviewContent: View {
         NavigationStack {
             List {
                 ValuePicker("Name", selection: $selection) {
-                    ForEach(["Julia, Janet, John"], id: \.self) { name in
+                    ForEach(["John", "Jean", "Juan"]) { name in
                         Text(verbatim: name)
                             .pickerTag(name)
                     }
