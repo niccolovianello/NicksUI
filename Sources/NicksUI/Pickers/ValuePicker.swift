@@ -2,158 +2,111 @@
 //  ValuePicker.swift
 //  NicksUI
 //
-//  Created by Niccolò Vianello on 06/08/25.
-//  Credits: Julien Sagot
-
+//  Created by Niccolò Vianello on 07/08/25.
+//
 
 import SwiftUI
 
-public struct ValuePicker<SelectionValue: Hashable, Content: View>: View {
+/// A generic view for selecting a value from a list.
+///
+/// `ValuePicker` displays a list of selectable items, highlighting the currently selected one.
+/// It can be used with or without a toolbar content view.
+///
+/// - Parameters:
+///   - T: The type of the selectable value, which must conform to `Identifiable` and `Hashable`.
+///   - AllValues: A collection of all selectable values.
+///   - ToolbarContent: An optional view displayed as the toolbar content.
+struct ValuePicker<
+    T: Identifiable & Hashable,
+    AllValues: RandomAccessCollection<T>,
+    ToolbarContent: View
+>: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     private let title: LocalizedStringKey
-    private let selection: Binding<SelectionValue>
-    private let content: Content
+    private let selectedValue: Binding<T>
+    private let allValues: AllValues
+    private let backgroundColor: Color
+    private var toolbarContent: ToolbarContent?
     
     public init(
         _ title: LocalizedStringKey,
-        selection: Binding<SelectionValue>,
-        @ViewBuilder content: () -> Content
+        selectedValue: Binding<T>,
+        allValues: AllValues,
+        backgroundColor: Color,
+        @ViewBuilder toolbarContent: () -> ToolbarContent
     ) {
         self.title = title
-        self.selection = selection
-        self.content = content()
+        self.selectedValue = selectedValue
+        self.allValues = allValues
+        self.backgroundColor = backgroundColor
+        self.toolbarContent = toolbarContent()
     }
     
-    public var body: some View {
-        NavigationLink {
-            List {
-                _VariadicView.Tree(ValuePickerOptions(selectedValue: selection)) {
-                    content
+    var body: some View {
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            
+            List(allValues) { value in
+                HStack {
+                    Text(value.id as? String ?? "unknown value")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(4)
+                    
+                    if value == selectedValue.wrappedValue {
+                        Image(systemName: "checkmark")
+                    }
+                }
+                .background(backgroundColor.opacity(0.001))
+                .makeButton {
+                    selectedValue.wrappedValue = value
+                    dismiss()
                 }
             }
             .navigationTitle(title)
-            
-        } label: {
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.footnote.weight(.medium))
-                    .foregroundStyle(.secondary)
-                
-                Text(verbatim: String(describing: selection.wrappedValue))
+            .toolbar {
+                toolbarContent
             }
         }
     }
 }
 
-private struct ValuePickerOptions<Value: Hashable>: _VariadicView.MultiViewRoot {
-    private let selectedValue: Binding<Value>
-    
-    init(selectedValue: Binding<Value>) {
-        self.selectedValue = selectedValue
-    }
-    
-    @ViewBuilder
-    func body(children: _VariadicView.Children) -> some View {
-        Section {
-            ForEach(children) { child in
-                ValuePickerOption(
-                    selectedValue: selectedValue,
-                    value: child[CustomTagValueTraitKey<Value>.self]
-                ) {
-                    child
-                }
-            }
-        }
-    }
-}
-
-private struct ValuePickerOption<Content: View, Value: Hashable>: View {
-    @Environment(\.dismiss) private var dismiss
-    
-    private let selectedValue: Binding<Value>
-    private let value: Value?
-    private let content: Content
-    
+extension ValuePicker where ToolbarContent == EmptyView {
     init(
-        selectedValue: Binding<Value>,
-        value: CustomTagValueTraitKey<Value>.Value,
-        @ViewBuilder _ content: () -> Content
+        _ title: LocalizedStringKey,
+        selectedValue: Binding<T>,
+        allValues: AllValues,
+        backgroundColor: Color
     ) {
-        self.selectedValue = selectedValue
-        self.value = if case .tagged(let tag) = value {
-            tag
-        } else {
-            nil
-        }
-        self.content = content()
-    }
-    
-    var body: some View {
-        Button(
-            action: {
-                if let value {
-                    selectedValue.wrappedValue = value
-                }
-                dismiss()
-            },
-            label: {
-                HStack {
-                    content
-                        .tint(.primary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    if isSelected {
-                        Image(systemName: "checkmark")
-                            .foregroundStyle(.tint)
-                            .font(.body.weight(.semibold))
-                            .accessibilityHidden(true)
-                    }
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-            }
-        )
-    }
-    
-    private var isSelected: Bool {
-        selectedValue.wrappedValue == value
+        self.init(title, selectedValue: selectedValue, allValues: allValues, backgroundColor: backgroundColor, toolbarContent: { EmptyView() })
     }
 }
 
-extension View {
-    public func pickerTag<V: Hashable>(_ tag: V) -> some View {
-        _trait(CustomTagValueTraitKey<V>.self, .tagged(tag))
-    }
-}
-
-private struct CustomTagValueTraitKey<V: Hashable>: _ViewTraitKey {
-    enum Value {
-        case untagged
-        case tagged(V)
-    }
-    
-    static var defaultValue: CustomTagValueTraitKey<V>.Value {
-        .untagged
-    }
-}
-
-private struct PreviewContent: View {
-    @State private var selection = "John"
-    
-    var body: some View {
-        NavigationStack {
-            List {
-                ValuePicker("Name", selection: $selection) {
-                    ForEach(["John", "Jean", "Juan"]) { name in
-                        Text(verbatim: name)
-                            .pickerTag(name)
-                    }
-                }
-            }
-            .navigationTitle("Custom Picker")
-        }
-    }
+enum Item: String, Identifiable, Hashable, CaseIterable {
+    case a, b, c
+    var id: String { rawValue }
 }
 
 #Preview {
-    PreviewContent()
+    @Previewable @State var selected: Item = .a
+    
+    NavigationStack {
+        NavigationLink {
+            ValuePicker(
+                "Select a value",
+                selectedValue: $selected,
+                allValues: Item.allCases,
+                backgroundColor: .gray.opacity(0.1)
+            )
+        } label: {
+            VStack(alignment: .leading) {
+                Text("Test")
+                    .font(.footnote.weight(.medium))
+                    .foregroundStyle(.secondary)
+                
+                Text(selected.id)
+            }
+        }
+    }
 }
