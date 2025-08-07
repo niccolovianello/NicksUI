@@ -16,7 +16,7 @@ import SwiftUI
 ///   - T: The type of the selectable value, which must conform to `Identifiable` and `Hashable`.
 ///   - AllValues: A collection of all selectable values.
 ///   - ToolbarContent: An optional view displayed as the toolbar content.
-struct ValuePicker<
+public struct ValuePicker<
     T: Identifiable & Hashable,
     AllValues: RandomAccessCollection<T>,
     ToolbarContent: View
@@ -44,7 +44,7 @@ struct ValuePicker<
         self.toolbarContent = toolbarContent()
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
             
