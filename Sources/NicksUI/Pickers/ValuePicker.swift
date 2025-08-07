@@ -72,7 +72,7 @@ public struct ValuePicker<
     }
 }
 
-extension ValuePicker where ToolbarContent == EmptyView {
+public extension ValuePicker where ToolbarContent == EmptyView {
     init(
         _ title: LocalizedStringKey,
         selectedValue: Binding<T>,
