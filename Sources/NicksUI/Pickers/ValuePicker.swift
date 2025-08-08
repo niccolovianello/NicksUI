@@ -27,6 +27,7 @@ public struct ValuePicker<
     private let title: LocalizedStringKey
     private let selectedValue: Binding<T>
     private let allValues: AllValues
+    private let checkmarkColor: Color
     private let backgroundColor: Color
     private var toolbarContent: ToolbarContent?
     
@@ -34,12 +35,14 @@ public struct ValuePicker<
         _ title: LocalizedStringKey,
         selectedValue: Binding<T>,
         allValues: AllValues,
+        checkmarkColor: Color = .primary,
         backgroundColor: Color,
         @ViewBuilder toolbarContent: () -> ToolbarContent
     ) {
         self.title = title
         self.selectedValue = selectedValue
         self.allValues = allValues
+        self.checkmarkColor = checkmarkColor
         self.backgroundColor = backgroundColor
         self.toolbarContent = toolbarContent()
     }
@@ -56,6 +59,7 @@ public struct ValuePicker<
                     
                     if value == selectedValue.wrappedValue {
                         Image(systemName: "checkmark")
+                            .foregroundStyle(checkmarkColor)
                     }
                 }
                 .background(backgroundColor.opacity(0.001))
