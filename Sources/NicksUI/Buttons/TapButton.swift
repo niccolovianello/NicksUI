@@ -127,7 +127,7 @@ public struct TapButton: View {
                             .frame(width: 20)
                     }
                     
-                    Text(text)
+                    Text(LocalizedStringKey(text))
                         .font(.headline)
                 }
                 .foregroundStyle(foregroundColor)
