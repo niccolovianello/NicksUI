@@ -28,7 +28,7 @@ public struct ValuePicker<
     private let selectedValue: Binding<T>
     private let allValues: AllValues
     private let checkmarkColor: Color
-    private let backgroundColor: Color
+    private let backgroundColor: Color?
     private var toolbarContent: ToolbarContent?
     
     public init(
@@ -36,7 +36,7 @@ public struct ValuePicker<
         selectedValue: Binding<T>,
         allValues: AllValues,
         checkmarkColor: Color = .primary,
-        backgroundColor: Color,
+        backgroundColor: Color? = nil,
         @ViewBuilder toolbarContent: () -> ToolbarContent
     ) {
         self.title = title
@@ -62,12 +62,13 @@ public struct ValuePicker<
                             .foregroundStyle(checkmarkColor)
                     }
                 }
-                .background(backgroundColor.opacity(0.001))
+                .background(.secondary.opacity(0.001))
                 .makeButton {
                     selectedValue.wrappedValue = value
                     dismiss()
                 }
             }
+            .scrollContentBackground(backgroundColor != nil ? .hidden : .automatic)
             .navigationTitle(title)
             .toolbar {
                 toolbarContent
@@ -82,7 +83,7 @@ public extension ValuePicker where ToolbarContent == EmptyView {
         selectedValue: Binding<T>,
         allValues: AllValues,
         checkmarkColor: Color = .primary,
-        backgroundColor: Color
+        backgroundColor: Color? = nil
     ) {
         self.init(
             title,
@@ -110,7 +111,7 @@ enum Item: String, Identifiable, Hashable, CaseIterable {
                 selectedValue: $selected,
                 allValues: Item.allCases,
                 checkmarkColor: .primary,
-                backgroundColor: .gray.opacity(0.1)
+                backgroundColor: .green
             ) {
                 Image(systemName: "plus.circle.fill")
             }
