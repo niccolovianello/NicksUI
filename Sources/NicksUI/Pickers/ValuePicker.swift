@@ -81,9 +81,17 @@ public extension ValuePicker where ToolbarContent == EmptyView {
         _ title: LocalizedStringKey,
         selectedValue: Binding<T>,
         allValues: AllValues,
+        checkmarkColor: Color = .primary,
         backgroundColor: Color
     ) {
-        self.init(title, selectedValue: selectedValue, allValues: allValues, backgroundColor: backgroundColor, toolbarContent: { EmptyView() })
+        self.init(
+            title,
+            selectedValue: selectedValue,
+            allValues: allValues,
+            checkmarkColor: checkmarkColor,
+            backgroundColor: backgroundColor,
+            toolbarContent: { EmptyView()
+            })
     }
 }
 
@@ -101,8 +109,11 @@ enum Item: String, Identifiable, Hashable, CaseIterable {
                 "Select a value",
                 selectedValue: $selected,
                 allValues: Item.allCases,
+                checkmarkColor: .primary,
                 backgroundColor: .gray.opacity(0.1)
-            )
+            ) {
+                Image(systemName: "plus.circle.fill")
+            }
         } label: {
             VStack(alignment: .leading) {
                 Text("Test")
