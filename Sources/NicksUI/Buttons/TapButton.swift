@@ -46,7 +46,7 @@ import SwiftUI
 public struct TapButton: View {
     
     var image: Image?
-    var text: String
+    var text: LocalizedStringKey
     var foregroundColor: Color
     var backgroundColor: Color
     var horizontalPadding: CGFloat
@@ -57,7 +57,7 @@ public struct TapButton: View {
     
     public init(
         imageSystemName: String,
-        text: String = "Sign in with Apple",
+        text: LocalizedStringKey = "Sign in with Apple",
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
         horizontalPadding: CGFloat = 16,
@@ -77,7 +77,7 @@ public struct TapButton: View {
     
     public init(
         uiImage: UIImage,
-        text: String = "Sign in with Apple",
+        text: LocalizedStringKey = "Sign in with Apple",
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
         horizontalPadding: CGFloat = 16,
@@ -96,7 +96,7 @@ public struct TapButton: View {
     }
     
     public init(
-        text: String = "Sign in with Apple",
+        text: LocalizedStringKey = "Sign in with Apple",
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
         horizontalPadding: CGFloat = 16,
@@ -127,7 +127,7 @@ public struct TapButton: View {
                             .frame(width: 20)
                     }
                     
-                    Text(LocalizedStringKey(text))
+                    Text(text)
                         .font(.headline)
                 }
                 .foregroundStyle(foregroundColor)
