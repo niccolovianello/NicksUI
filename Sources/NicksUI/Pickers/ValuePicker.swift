@@ -113,7 +113,7 @@ enum Item: String, Identifiable, Hashable, CaseIterable {
                 checkmarkColor: .primary,
                 backgroundColor: .green
             ) {
-                Image(systemName: "plus.circle.fill")
+                Image(systemName: "plus")
             }
         } label: {
             VStack(alignment: .leading) {

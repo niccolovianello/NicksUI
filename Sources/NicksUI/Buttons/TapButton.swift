@@ -14,7 +14,7 @@ import SwiftUI
 /// - Optional image (from system name or `UIImage`)
 /// - Configurable text label
 /// - Customizable foreground and background colors
-/// - Adjustable padding, height, and corner radius
+/// - Adjustable horizontal/vertical padding, height, and corner radius
 /// - Tap action handler via closure
 ///
 /// ## Usage Examples:
@@ -40,6 +40,7 @@ import SwiftUI
 /// - `foregroundColor`: The color of the icon and text.
 /// - `backgroundColor`: The background color of the button.
 /// - `horizontalPadding`: The horizontal padding around the button.
+/// - `verticalPadding`: The vertical padding around the button.
 /// - `buttonHeight`: The height of the button.
 /// - `cornerRadius`: The corner radius of the button.
 /// - `action`: An optional closure that gets executed on tap.
@@ -50,6 +51,7 @@ public struct TapButton: View {
     var foregroundColor: Color
     var backgroundColor: Color
     var horizontalPadding: CGFloat
+    var verticalPadding: CGFloat
     var buttonHeight: CGFloat
     var cornerRadius: CGFloat
     
@@ -61,6 +63,7 @@ public struct TapButton: View {
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
         horizontalPadding: CGFloat = 16,
+        verticalPadding: CGFloat = 8,
         buttonHeight: CGFloat = 50,
         cornerRadius: CGFloat = 12,
         action: (() -> Void)? = nil
@@ -70,6 +73,7 @@ public struct TapButton: View {
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
         self.horizontalPadding = horizontalPadding
+        self.verticalPadding = verticalPadding
         self.buttonHeight = buttonHeight
         self.cornerRadius = cornerRadius
         self.action = action
@@ -81,6 +85,7 @@ public struct TapButton: View {
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
         horizontalPadding: CGFloat = 16,
+        verticalPadding: CGFloat = 8,
         buttonHeight: CGFloat = 50,
         cornerRadius: CGFloat = 12,
         action: (() -> Void)? = nil
@@ -90,6 +95,7 @@ public struct TapButton: View {
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
         self.horizontalPadding = horizontalPadding
+        self.verticalPadding = verticalPadding
         self.buttonHeight = buttonHeight
         self.cornerRadius = cornerRadius
         self.action = action
@@ -100,6 +106,7 @@ public struct TapButton: View {
         foregroundColor: Color = .white,
         backgroundColor: Color = .black,
         horizontalPadding: CGFloat = 16,
+        verticalPadding: CGFloat = 8,
         buttonHeight: CGFloat = 50,
         cornerRadius: CGFloat = 12,
         action: (() -> Void)? = nil
@@ -109,6 +116,7 @@ public struct TapButton: View {
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
         self.horizontalPadding = horizontalPadding
+        self.verticalPadding = verticalPadding
         self.buttonHeight = buttonHeight
         self.cornerRadius = cornerRadius
         self.action = action
@@ -138,6 +146,7 @@ public struct TapButton: View {
             }
             .frame(height: buttonHeight)
             .padding(.horizontal, horizontalPadding)
+            .padding(.vertical, verticalPadding)
     }
 }
 
